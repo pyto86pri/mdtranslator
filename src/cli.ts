@@ -1,40 +1,22 @@
 import { readFile } from 'fs';
 import p from 'pify';
-import meow, { AnyFlags, StringFlag } from 'meow';
 import { mdtrans } from './';
+import { program } from 'commander';
 
-const usage = `
-  Usage
-    $ mdtrans <input>
-  Options
-    --from LANG    set the source language
-    --to   LANG    set the translation target language
-  Example
-    $ mdtrans foo.md --from=ja --to=ja > foo.ja.md
-`;
-const options: meow.Options<AnyFlags> = {
-  flags: {
-    from: {
-      type: 'string',
-      alias: 'f',
-      default: 'ja',
-    },
-    to: {
-      type: 'string',
-      alias: 'to',
-      default: 'en',
-    },
-  },
-};
-const cli = meow(usage);
+program
+  .option('--from <lang>', 'set the source language', 'ja')
+  .option('--to <lang>', 'set the translation target language', 'en')
 
-if (!cli.input[0]) {
-  cli.showHelp(-1);
+program.parse(process.argv)
+
+if (!program.args[0]) {
+  console.log(program.helpInformation());
+  process.exit(1);
 }
 
-p(readFile)(cli.input[0], 'utf8')
+p(readFile)(program.args[0] as string, 'utf8')
   .then((md: string) =>
-    mdtrans(md, { from: cli.flags.from as string, to: cli.flags.to as string })
+    mdtrans(md, { from: program.from as string, to: program.to as string })
   )
   .then((data: string) => console.log(data))
   .catch(e => {

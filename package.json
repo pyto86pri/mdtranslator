@@ -1,6 +1,6 @@
 {
-  "name": "mdtranslator",
-  "version": "0.0.0",
+  "name": "@pyto86/mdtranslator",
+  "version": "0.0.2",
   "main": "dist/main.js",
   "author": "pyto86",
   "bin": "bin/main.js",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@vitalets/google-translate-api": "^3.0.0",
-    "meow": "^6.1.0",
+    "commander": "^5.0.0",
     "pify": "^5.0.0",
     "remark-parse": "^7.0.2",
     "remark-stringify": "^7.0.4",
