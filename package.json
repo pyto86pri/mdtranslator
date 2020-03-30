@@ -1,0 +1,45 @@
+{
+  "name": "mdtranslator",
+  "version": "0.0.0",
+  "main": "dist/main.js",
+  "author": "pyto86",
+  "bin": "bin/main.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
+    "@types/node": "^13.9.5",
+    "@types/pify": "^3.0.2",
+    "@types/unist": "^2.0.3",
+    "babel-loader": "^8.1.0",
+    "gts": "^1.1.2",
+    "husky": "^4.2.3",
+    "jest": "^25.2.4",
+    "lint-staged": "^10.0.10",
+    "ts-jest": "^25.2.1",
+    "ts-loader": "^6.2.2",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3",
+    "vfile": "^4.1.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "build": "webpack"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npx gtx fix"
+    ]
+  },
+  "dependencies": {
+    "@vitalets/google-translate-api": "^3.0.0",
+    "meow": "^6.1.0",
+    "pify": "^5.0.0",
+    "remark-parse": "^7.0.2",
+    "remark-stringify": "^7.0.4",
+    "unified": "^8.4.2"
+  }
+}
