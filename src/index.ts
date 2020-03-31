@@ -14,22 +14,24 @@ export function translator(options: Options) {
   return transformer;
 
   function transformer(tree: Node, file: VFile): Promise<void> {
-    if (tree.type === 'text' && typeof tree.value === 'string') {
-      return translate(tree.value, options)
-        .then(res => {
-          tree.value = res.text;
-        })
-        .catch(e => {
-          console.error(e);
-        });
+    const queue = (tree_: Node, file_: VFile): Promise<void>[] => {
+      if (tree_.type === 'text' && typeof tree_.value === 'string') {
+        return [translate(tree_.value as string, options)
+          .then((res): void => {
+            tree_.value = res.text;
+          })
+          .catch((e): void => {
+            console.error(e);
+          })];
+      }
+      const children = tree_.children as Node[] | undefined;
+      if (children) {
+        return children
+          .flatMap((node) => queue(node, file_))
+      }
+      return [];
     }
-    const children = tree.children as Node[] | undefined;
-    if (children) {
-      return children
-        .map(node => transformer(node, file))
-        .reduce((p, f) => p.then(() => f), Promise.resolve());
-    }
-    return Promise.resolve();
+    return Promise.all(queue(tree, file)).then(() => {});
   }
 }
 
